@@ -2,9 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Video Test</title>
+<title>Test MyBatis</title>
 <style type="text/css">
     * { box-sizing: border-box; }
+    .video-film{
+    	box-shadow : rgba(0,0,0,0.7) 0 0 0 9999px;
+		z-index : 100;
+	}
     .video-background {
         background: #000;
         position: fixed;
@@ -37,9 +41,9 @@
 	  background-color: rgba(0,0,0,0);
 	}
 	#visual-btn:hover {
-	  color: #2e6aa5;
+	  color: #ff6868;
 	  font-size: 20px;
-	  border: 2px solid #2e6aa5;
+	  border: 2px solid #ff6868;
 	  padding: 12px 24px;
 	  border-radius: 5px;
 	  cursor: pointer;
@@ -47,12 +51,44 @@
     </style>
 </head>
 <body>
-<h3 style="text-align: center;"> Video Background test</h3>
-<p align="center"><button id="visual-btn" onclick="javascript:location.href='/testm/index.jsp';">인덱스로 가기</button></p>
+<h1 style="text-align: center; color:#fff;">Direct Job : Da Job</h1>
+<h3 style="text-align: center; color:#d5d4f7;">본 사이트는 IT 취업 및 구직에 있어 모두가 손쉽게 사람을 구하고,<br>
+취업할 수 있는 정보를 제공하는 사이트입니다.
+지금 바로 이용해 보세요!</h3>
+<p align="center"><button id="visual-btn" onclick="javascript:location.href='/jhtest/index.jsp';">인덱스로 가기</button></p>
 <div class="video-background">
     <div class="video-foreground">
-      <iframe src="https://www.youtube.com/embed/0Naqf2oCU0Y?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=0Naqf2oCU0Y&volume=0" frameborder="0" allowfullscreen></iframe>
+    <div id="muteYouTubeVideoPlayer"></div>
     </div>
   </div>
+  <div class="video-film"></div>
+  <script async src="https://www.youtube.com/iframe_api"></script>
+  <script type="text/javascript">
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('muteYouTubeVideoPlayer', {
+    	videoId: '0Naqf2oCU0Y',
+    	playerVars: {
+    	      autoplay: 1,        // Auto-play the video on load
+    	      controls: 0,        // Show pause/play buttons in player
+    	      rel : 0,
+    	      showinfo : 0,
+    	      showinfo: 0,        // Hide the video title
+    	      modestbranding: 1,  // Hide the Youtube Logo
+    	      loop: 1,            // Run the video in a loop
+    	      playlist : '0Naqf2oCU0Y',
+    	      fs: 0,              // Hide the full screen button
+    	      cc_load_policy: 0, // Hide closed captions
+    	      iv_load_policy: 3,  // Hide the Video Annotations
+    	      autohide: 1         // Hide video controls when playing
+    	    },
+    	events: {
+    	      onReady: function(e) {
+    	        e.target.mute();
+    	      }
+    		}
+    });
+  }
+  </script>
 </body>
 </html>
