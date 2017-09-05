@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Cert">
+
+	<resultMap id="resultCert" type="Cert">
+		<id property="cert_no" column="CERT_NO" />
+		<result property="cert_name" column="CERT_NAME" />
+		<result property="cert_type" column="CERT_TYPE" />
+	</resultMap>
+	
+	<select id="selectList" resultType="arraylist" resultMap="resultCert">
+		SELECT * FROM CERT
+	</select>
+
+</mapper>

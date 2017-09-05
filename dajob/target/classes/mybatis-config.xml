@@ -10,7 +10,8 @@
 	<typeAliases>		
 		<typeAlias type="org.kh.dajob.member.model.vo.Member" alias="Member" />
 		<typeAlias type="org.kh.dajob.member.model.vo.User" alias="User" />
-		<typeAlias type="org.kh.dajob.member.model.vo.Company" alias="Company" />		
+		<typeAlias type="org.kh.dajob.member.model.vo.Company" alias="Company" />
+		<typeAlias type="org.kh.dajob.cert.model.vo.Cert" alias="Cert" />		
 	</typeAliases>
 	
 	<!-- <environments default="development">
@@ -29,5 +30,6 @@
 		<mapper resource="mappers/member-mapper.xml" />
 		<mapper resource="mappers/user-mapper.xml" />
 		<mapper resource="mappers/company-mapper.xml" />
+		<mapper resource="mappers/cert-mapper.xml" />
 	</mappers>
 </configuration>

@@ -5,8 +5,10 @@ import java.sql.Date;
 public class User extends Member {
 	private static final long serialVersionUID = 11111111112L;
 	
+	private Member m;
 	private String gender;
 	private Date birthday;
+	private String resume_data;
 	private String resumefile;
 	
 	public User() {
@@ -22,14 +24,37 @@ public class User extends Member {
 		this.birthday = birthday;
 		this.resumefile = resumefile;
 	}
-
-	public User(String member_id, String gender, Date birthday, String resumefile) {
-		super(member_id);
+	
+	public User(String id, String gender, Date birthday, String resume_data, String resumefile) {
+		super(id);
 		this.gender = gender;
 		this.birthday = birthday;
+		this.resume_data = resume_data;
 		this.resumefile = resumefile;
 	}
 	
+	public User(Member m, String gender, Date birthday, String resume_data, String resumefile) {
+		this.m = m;
+		this.gender = gender;
+		this.birthday = birthday;
+		this.resume_data = resume_data;
+		this.resumefile = resumefile;
+	}
+	
+	public User(String id, String gender, Date birthday) {
+		super(id);
+		this.gender = gender;
+		this.birthday = birthday;
+	}
+
+	public User(String gender, Date birthday, String resume_data, String resumefile) {
+		super();
+		this.gender = gender;
+		this.birthday = birthday;
+		this.resume_data = resume_data;
+		this.resumefile = resumefile;
+	}
+
 	public User(String gender, Date birthday, String resumefile) {
 		super();
 		this.gender = gender;
@@ -39,7 +64,16 @@ public class User extends Member {
 
 	@Override
 	public String toString() {
-		return "User = ["+super.toString()+ "gender=" + gender + ", birthday=" + birthday + ", resumefile=" + resumefile + "]";
+		return "User = ["+super.toString()+ "[gender=" + gender + ", birthday=" + birthday + ", resume_data=" + resume_data + ", resumefile="
+				+ resumefile + "]";
+	}
+
+	public Member getM() {
+		return m;
+	}
+
+	public void setM(Member m) {
+		this.m = m;
 	}
 
 	public String getGender() {
@@ -56,6 +90,14 @@ public class User extends Member {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getResume_data() {
+		return resume_data;
+	}
+
+	public void setResume_data(String resume_data) {
+		this.resume_data = resume_data;
 	}
 
 	public String getResumefile() {

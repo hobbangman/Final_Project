@@ -16,6 +16,7 @@
 		<result property="member_profile_img" column="MEMBER_PROFILE_IMG" />
 		<result property="gender" column="GENDER" />
 		<result property="birthday" column="BIRTHDAY" />
+		<result property="resume_data" column="RESUME_DATA" />
 		<result property="resumefile" column="RESUMEFILE" />
 	</resultMap>
 	
@@ -27,13 +28,13 @@
 	<insert id="insertUser" parameterType="User" flushCache="true"
 		statementType="PREPARED" keyProperty="" keyColumn="" useGeneratedKeys="true"
 		timeout="20">
-		INSERT INTO MEMBER VALUES(#{member_id}, #{gender}, #{birthday}, #{resumefile})
+		INSERT INTO MEMBER VALUES(#{member_id}, #{gender}, #{birthday}, NULL, #{resumefile})
 	</insert>
 
 	<update id="updateMember" parameterType="User" flushCache="true"
 		statementType="PREPARED" timeout="20">
-		UPDATE MEMBER SET GENDER = #{gender}, BIRTHDAY = #{birthday},
-		 RESUMEFILE = #{resumefile} WHERE MEMBER_ID = #{member_id}
+		UPDATE MEMBER SET GENDER = #{gender}, BIRTHDAY = #{birthday}, RESUME_DATA = #{resume_data},
+		RESUMEFILE = #{resumefile} WHERE MEMBER_ID = #{member_id}
 	</update>
 
 </mapper>

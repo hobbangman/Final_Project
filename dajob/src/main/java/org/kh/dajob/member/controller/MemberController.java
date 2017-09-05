@@ -1,16 +1,17 @@
 package org.kh.dajob.member.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.kh.dajob.cert.model.service.CertService;
 import org.kh.dajob.member.model.service.MemberService;
 import org.kh.dajob.member.model.vo.Member;
+import org.kh.dajob.member.model.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private CertService certService;
 	
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public void loginMember(Member m, HttpSession session, HttpServletResponse response) throws IOException {
@@ -55,8 +59,10 @@ public class MemberController {
 	}
 	
 	@RequestMapping("enrollView.do")
-	public String enrollView(){
+	public String enrollView(Model model){
 		logger.info("enrollView() call...");
+		
+		model.addAttribute("certList",certService.selectList());
 		
 		return "member/enroll";
 	}
@@ -91,12 +97,15 @@ public class MemberController {
 		logger.info("userInsert() call...");
 		request.setCharacterEncoding("utf-8");
 		String returnPage = null;
+		/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");*/
 		
 		String member_id = request.getParameter("member_id");
 		String member_password = request.getParameter("member_password");
 		String member_type_code = "U";
 		String member_name = request.getParameter("member_name");
 		String member_phone = request.getParameter("member_phone");
+		String gender = request.getParameter("gender");
+		Date birthday = Date.valueOf(request.getParameter("birthday"));
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getParameter("email1") + "@" +request.getParameter("email2"));
@@ -107,12 +116,17 @@ public class MemberController {
 		sb.append(request.getParameter("addr1") + ",");
 		sb.append(request.getParameter("addr2"));
 		String member_address = sb.toString();
-		System.out.println(new Member(member_id,member_password,member_type_code,
-				member_name,member_email,member_phone,member_address,"default.jpg"));
+		
 		int result = memberService.insertMember(new Member(member_id,member_password,member_type_code,
 				member_name,member_email,member_phone,member_address,"default.jpg"));
 		if (result > 0) {
-			returnPage = "index";
+			result = memberService.insertUser(new User(member_id, gender, birthday));
+			if(result > 0) {
+				returnPage = "index";
+			} else {
+				model.addAttribute("message", "회원 정보 등록 실패!!");
+				returnPage = "member/memberError";
+			}
 		} else {
 			model.addAttribute("message", "회원 가입 서비스 실패!!");
 			returnPage = "member/memberError";

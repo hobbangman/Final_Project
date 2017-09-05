@@ -51,11 +51,12 @@ table {
 table tr td {
 	size: 7px;
 	padding-bottom: 5px;
-	text-align: center;
+	text-align: left;
 }
 table input{
 	height: 34px;
 }
+label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-top}
 </style>
 </head>
 <body>
@@ -81,7 +82,7 @@ table input{
 		</div>
 		<!--./Container-->
 	</header>
-
+<c:set var="certList" value="${requestScope.certList}"/>
 	<!--start wrapper-->
 	<section class="wrapper">
 		<section class="content contact">
@@ -114,7 +115,8 @@ table input{
 								<span>일반 회원 가입</span>
 							</h4>
 						</div>
-						<form action="userEnroll.do" method="post">
+						<form action="userEnroll.do" method="post" id="userInsert">
+						<input type="number" name="certCnt" id="certCnt" style="display: none;">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
 									<td><input type="text" class="id" name="member_id"
@@ -138,6 +140,9 @@ table input{
 								<tr>
 									<td colspan="2"><span class="passcheckLayer2"></span></td>
 								</tr>
+								<tr><td>프로필<br>이미지 : </td>
+									<td><p align="center"><input type="file" name="member_profile_img"></p></td>
+								</tr>
 								<tr><td>회원이름 : </td>
 									<td><input type="text" name="member_name"
 										placeholder="가입자 이름" size="52%"></td>
@@ -159,11 +164,11 @@ table input{
 									</select></td>
 								</tr>
 								<tr><td>연락처 : </td>
-									<td><input type="text" name="member_phone"
-										placeholder="연락처" size="52%"></td>
+									<td><input type="tel" name="member_phone"
+										placeholder="연락처" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
 								</tr>
 								<tr><td>우편번호 : </td>
-									<td align="left"><input type="text" name="post_code"
+									<td><input type="text" name="post_code"
 										placeholder="우편번호">&nbsp;&nbsp;<button type="button" class="btn btn-default btn-xs" onclick="execDaumPostcode();">찾기</button></td>
 								</tr>
 								<tr><td>상세주소 : </td>
@@ -171,11 +176,29 @@ table input{
 										placeholder="주소" size="22%" >&nbsp;<input type="text" name="addr2"
 										placeholder="상세주소" size="22%" ></td>
 								</tr>
-								<tr><td>프로필<br>이미지 : </td>
-									<td><p align="center"><input type="file" name="member_profile_img"></p></td>
+								<tr><td>성별 : </td>
+									<td><input class="inputBtn" type="radio" name="gender" value="M" checked>
+										<label for="gender" class="inputBtn" style="display:inline;">&nbsp;남성</label>
+  										&nbsp;&nbsp; &nbsp;&nbsp;<input class="inputBtn" type="radio" name="gender" value="F">
+  										<label for="gender" class="inputBtn" style="display:inline;">&nbsp;여성</label></td>
 								</tr>
-								<tr>
-									<td colspan="2"><button class="btn btn-success" type="submit">가입하기</button>&nbsp;&nbsp;
+								<tr><td>생년월일 : </td>
+									<td><input type="date" name="birthday"></td>
+								</tr>
+								<tr><td>자격증 구분</td><td><input type="checkbox" value="certChk" name="certChk" id="certChk" class="certChk inputBtn"><label for="certChk" class="certChk inputBtn" style="display:inline;">&nbsp;자격증 유/무</label>
+									&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default" name="addCert" id="addCert" style="display: none;"><i class="fa fa-plus"></i></button>
+        							&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default" name="delCert" id="delCert" style="display: none;"><i class="fa fa-minus"></i></button>
+        							<div class="certList" style="margin-top:7px; display: none;">
+						        	<select name="cert1" id="cert1" style="text-ailgn:center;">
+						        	<option value="">--- 선택 ---</option>
+						        	<c:forEach var="certName" items="${certList}">
+						        	<option value="${certName.cert_no}">${certName.cert_name}</option>
+						        	</c:forEach>
+						        	</select>&nbsp;&nbsp;&nbsp;<input type="date" class="certDate" id="certDate1" name="certDate1">
+        							</div>
+        						</td></tr>
+								<tr style="height: 100px;">
+									<td colspan="2" style="text-align: center;"><button class="btn btn-success" type="submit">가입하기</button>&nbsp;&nbsp;
 										<button class="btn btn-warning" type="reset">취소하기</button></td>
 								</tr>
 							</table>
@@ -187,7 +210,7 @@ table input{
 								<span>기업 회원 가입</span>
 							</h4>
 						</div>
-						<form action="compEnroll.do" method="post">
+						<form action="compEnroll.do" method="post" id="compInsert">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
 									<td><input type="text" class="id" name="member_id"
@@ -211,6 +234,9 @@ table input{
 								<tr>
 									<td colspan="2"><span class="passcheckLayer2"></span></td>
 								</tr>
+								<tr><td>프로필<br>이미지 : </td>
+									<td><p align="center"><input type="file" name="member_profile_img"></p></td>
+								</tr>
 								<tr><td>회원이름 : </td>
 									<td><input type="text" name="member_name"
 										placeholder="가입자 이름" size="52%"></td>
@@ -232,11 +258,11 @@ table input{
 									</select></td>
 								</tr>
 								<tr><td>연락처 : </td>
-									<td><input type="text" name="member_phone"
-										placeholder="연락처" size="52%"></td>
+									<td><input type="tel" name="member_phone"
+										placeholder="연락처" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
 								</tr>
 								<tr><td>우편번호 : </td>
-									<td align="left"><input type="text" name="post_code"
+									<td><input type="text" name="post_code"
 										placeholder="우편번호">&nbsp;&nbsp;<button type="button" class="btn btn-default btn-xs" onclick="execDaumPostcode();">찾기</button></td>
 								</tr>
 								<tr><td>상세주소 : </td>
@@ -244,11 +270,8 @@ table input{
 										placeholder="주소" size="22%" >&nbsp;<input type="text" name="addr2"
 										placeholder="상세주소" size="22%" ></td>
 								</tr>
-								<tr><td>프로필<br>이미지 : </td>
-									<td><p align="center"><input type="file" name="member_profile_img"></p></td>
-								</tr>
-								<tr>
-									<td colspan="2"><button class="btn btn-success" type="submit">가입하기</button>&nbsp;&nbsp;
+								<tr style="height: 100px;">
+									<td colspan="2" style="text-align: center;"><button class="btn btn-success" type="submit">가입하기</button>&nbsp;&nbsp;
 										<button class="btn btn-warning" type="reset">취소하기</button></td>
 								</tr>
 							</table>
@@ -290,6 +313,7 @@ table input{
 		"text-align" : "center"
 	}; //성공
 	$(function() {
+		$('checkbox').attr('checked', false);
 		$('input[name=member_id]').keyup(function() {
 			$.ajax({
 				url : "dupid.do",
@@ -363,7 +387,7 @@ table input{
                 $('input[name=addr2]').focus();
             }
         }).open();
-    }
+    };
 	
 	$(function() {
 		$(".user").click(function() {
@@ -391,8 +415,7 @@ table input{
 		} else {
 			$('.passcheckLayer').text("6~16자 영문대소문자, 숫자, 특수문자 혼합하여 사용하세요").css(	s_fail);
 		}
-
-	}
+	};
 
 	function passcheck2(e) {
 		console.log($(e).parents());
@@ -402,7 +425,7 @@ table input{
 		} else {
 			$('.passcheckLayer2').text("비밀번호 확인").css(s_success);
 		}
-	}
+	};
 
 	function email_change(e) {
 		//console.log($(e).val());
@@ -419,7 +442,7 @@ table input{
 			email2.attr('disabled', 'true');
 			email2.val($(e).val());
 		}
-	}
+	};
 	
 	function reset() {
 		$(".enrollUser input").each(function() {
@@ -431,6 +454,94 @@ table input{
 		$('.passcheckLayer').text('');
 		$('.passcheckLayer2').text('');
 		$('.idchk').html('');
-	}
+	};
+	
+	function checkDupCert(){
+		var temp = [];
+	    var obj = $('.certList');
+	    var result = false;
+	    $(obj).each(function(i) {
+            temp[i] = $(this).find("select > option:selected").val();
+        });
+	    $(temp).each(function(i) {
+            var x = 0;
+            $(obj).each(function() {
+            	if( temp[i] == $(this).find("select > option:selected").val() ) {
+                    x++;
+                }
+            });
+             
+            // 임시 변수값이 1 이상, 즉 1개 이상 중복되는값이 있으면 바로 종료
+            if(x > 1) {
+            	result = true;
+                return result;
+            }
+        });
+	    
+	    return result;
+	};
+	
+	$("#userInsert").submit(function(event){
+		$("#certCnt").val(cnt);
+		if(checkDupCert()){
+			alert('동일한 자격증이 존재합니다.');
+			event.preventDefault();
+		};
+		
+		return;
+	});
+	
+	$(function() {
+		
+	      $("#certChk").change(function(){
+	        if($("#certChk").is(":checked")){
+	            cnt = 1;
+	            $(".certList").toggle("slow");
+	            $("#addCert").toggle("fast");
+	            $("#delCert").toggle("fast");
+	        }else{
+	            cnt = 0;
+	            $(".certList").not(":first").remove();
+	            $(".certList").toggle("slow");
+	            $("#addCert").toggle("fast");
+	            $("#delCert").toggle("fast");
+	        }
+	    });
+	     
+	    $("#addCert").on("click",function(){
+	    	cnt++;
+	    	$(".certList:first").clone().insertAfter(".certList:last");
+	        $(".certList:last select").attr({
+	            name : 'cert'+cnt,
+	            id : 'cert'+cnt
+	        });
+	        $(".certList:last input[type=date]").attr({
+	            name : 'certDate'+cnt,
+	            id : 'certDate'+cnt
+	        });
+	    });
+	    $("#delCert").on("click",function(){
+	    	if(cnt <= 1){
+	            alert("더 이상 자격증 목록을 제거할 수 없습니다.\n사용하지 않으신다면\n사용 체크를 해제하세요!");
+	        } else {
+	            $(".certList:last").remove();
+	    		cnt--;
+	    	}
+	    });
+	    
+	    var today = new Date();
+	    var dd = today.getDate();
+	    var mm = today.getMonth()+1; //January is 0!
+	    var yyyy = today.getFullYear();
+	     if(dd<10){
+	            dd='0'+dd
+	        } 
+	        if(mm<10){
+	            mm='0'+mm
+	        } 
+
+	    today = yyyy+'-'+mm+'-'+dd;
+	    $("input[type=date]").attr('max', today);
+	});
 </script>
 </html>

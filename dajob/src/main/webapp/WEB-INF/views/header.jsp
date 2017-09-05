@@ -18,7 +18,7 @@
 		</c:if>
 		
         <div id="logo">
-             <h1><a href="index.do"><img src="<c:url value='/resources/images/Pagelogo.png'/>" alt="DaJob"/></a></h1>
+             <h1><a href="index.do"><img src="/dajob/resources/images/Pagelogo.png" alt="DaJob"/></a></h1>
         </div>
 
 <!--================================
