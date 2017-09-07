@@ -120,7 +120,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<span>일반 회원 가입</span>
 							</h4>
 						</div>
-						<form action="userEnroll.do" method="post" id="userInsert" enctype="multipart/form-data">
+						<form action="userEnroll.do" method="post" id="userInsert">
 						<input type="number" name="certCnt" id="certCnt" style="display: none;">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
@@ -214,7 +214,8 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<span>기업 회원 가입</span>
 							</h4>
 						</div>
-						<form action="compEnroll.do" method="post" id="compInsert" enctype="multipart/form-data">
+						<form action="compEnroll.do" method="post" id="compInsert">
+							<input type="hidden" id="company_wel" name="company_wel">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
 									<td><input type="text" class="id" name="member_id"
@@ -308,30 +309,37 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 									<td><input type="date" name="company_date"></td>
 								</tr>
 								<tr><td>복지 정보 : </td>
-									<td><input type="checkbox" name="company_welfare" class="inputBtn" value="4대보험">
-									<label for="company_welfare" class="inputBtn" style="display:inline;">4대보험</label>
-									&nbsp;&nbsp;&nbsp;
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="석식 제공">
-									<label for="company_welfare" class="inputBtn" style="display:inline;">석식 제공</label>
-									&nbsp;&nbsp;&nbsp;<br>
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="유류비 지원">
+									<td>
+										<table id="inline-table">
+											<tr>
+												<td>
+												<input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="4대보험">
+												<label for="company_welfare" class="inputBtn" style="display:inline;">4대보험</label>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</td>
+												<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="석식 제공">
+												<label for="company_welfare" class="inputBtn" style="display:inline;">석식 제공</label>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="유류비 지원">
 									<label for="company_welfare" class="inputBtn" style="display:inline;">유류비 지원</label>
-									&nbsp;&nbsp;&nbsp;
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="숙식 제공">
-									<label for="company_welfare" class="inputBtn" style="display:inline;">숙식 제공</label>
-									&nbsp;&nbsp;&nbsp;<br>
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="상여금 지급">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												<td><input type="checkbox" name="company_welfare" class="welfare inputBtn" value="숙식 제공">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">숙식 제공</label></td>
+											</tr>
+											<tr>
+												<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="상여금 지급">
 									<label for="company_welfare" class="inputBtn" style="display:inline;">상여금 지급</label>
-									&nbsp;&nbsp;&nbsp;
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="야근 수당">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="야근 수당">
 									<label for="company_welfare" class="inputBtn" style="display:inline;">야근 수당</label>
-									&nbsp;&nbsp;&nbsp;<br>
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="자기개발비 지원">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="자기개발비 지원">
 									<label for="company_welfare" class="inputBtn" style="display:inline;">자기개발비 지원</label>
-									&nbsp;&nbsp;&nbsp;
-									<input type="checkbox" name="company_welfare" class="inputBtn" value="야근 수당">
-									<label for="company_welfare" class="inputBtn" style="display:inline;">자녀 학자금</label>
-									&nbsp;&nbsp;&nbsp;<br>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												<td><input type="checkbox" name="company_welfare[]" class="welfare inputBtn" value="야근 수당">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">자녀 학자금</label></td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 								<tr style="height: 100px;">
@@ -509,10 +517,10 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 	};
 	
 	function reset() {
-		$(".enrollUser input").not(".gender, .certChk").each(function() {
+		$(".enrollUser input").not(".gender, .certChk, .welfare").each(function() {
 			$(this).val('');
 		});
-		$(".enrollCompany input").not(".gender, .certChk").each(function() {
+		$(".enrollCompany input").not(".gender, .certChk, .welfare").each(function() {
 			$(this).val('');
 		});
 		if($("#certChk").is(":checked")){
@@ -559,6 +567,16 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 	});
 	
 	$(function() {
+		$('.welfare').click(function(){
+			// 배열 선언
+			var arrayParam = new Array();
+
+			//each로 loop를 돌면서 checkbox의 check된 값을 가져와 담아준다.
+			$(".welfare:checked").each(function(){
+				arrayParam.push($(this).val());
+			});
+			$("#company_wel").val(arrayParam);
+		});
 	      $("#certChk").change(function(){
 	        if($("#certChk").is(":checked")){
 	            cnt = 1;

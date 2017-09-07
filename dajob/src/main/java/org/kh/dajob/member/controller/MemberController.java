@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.kh.dajob.cert.model.service.CertService;
 import org.kh.dajob.cert.model.vo.UserCert;
 import org.kh.dajob.member.model.service.MemberService;
+import org.kh.dajob.member.model.vo.Company;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
 import org.slf4j.Logger;
@@ -23,8 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @Controller
 public class MemberController {
@@ -104,7 +102,6 @@ public class MemberController {
 		logger.info("userInsert() call...");
 		request.setCharacterEncoding("utf-8");
 		String returnPage = null;
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String member_id = request.getParameter("member_id");
 		String member_password = request.getParameter("member_password");
@@ -174,7 +171,6 @@ public class MemberController {
 		logger.info("compInsert() call...");
 		request.setCharacterEncoding("utf-8");
 		String returnPage = null;
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String member_id = request.getParameter("member_id");
 		String member_password = request.getParameter("member_password");
@@ -192,10 +188,26 @@ public class MemberController {
 		sb.append(request.getParameter("addr2"));
 		String member_address = sb.toString();
 		
+		String company_welfare = request.getParameter("company_wel");
+		String company_name = request.getParameter("company_name");
+		String company_type = request.getParameter("company_type");
+		int company_staff = Integer.parseInt(request.getParameter("company_staff"));
+		int company_capital = Integer.parseInt(request.getParameter("company_capital"));
+		String company_code = request.getParameter("company_code");
+		String company_tel = request.getParameter("company_tel");
+		String company_fax = request.getParameter("company_fax");
+		Date company_date = Date.valueOf(request.getParameter("company_date"));
+		
 		int result = memberService.insertMember(new Member(member_id,member_password,"C",
 				member_name,member_email,member_phone,member_address,"default.jpg"));
 		if (result > 0) {
-			returnPage = "index";
+			result = memberService.insertCompany(new Company(member_id, company_name, company_type, company_staff, company_capital, company_code, company_tel, company_fax, company_welfare, company_date));
+			if(result > 0) {
+				returnPage = "index";
+			} else {
+				model.addAttribute("message", "기업 정보 등록 실패!!");
+				returnPage = "member/memberError";
+			}
 		} else {
 			model.addAttribute("message", "회원 가입 서비스 실패!!");
 			returnPage = "member/memberError";
