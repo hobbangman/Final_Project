@@ -15,6 +15,7 @@ import org.kh.dajob.member.model.service.MemberService;
 import org.kh.dajob.member.model.vo.Company;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
+import org.kh.dajob.workboard.model.vo.WorkBoard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -264,6 +265,23 @@ public class MemberController {
 		} else {
 			model.addAttribute("message", "회원 탈퇴 불가, 정상적인 접속이 아닙니다.");
 			returnPage = "member/memberError";
+		}
+		return returnPage;
+	}
+	
+	@RequestMapping(value = "likeCompList.do", method = RequestMethod.POST)
+	public String likeCompList(HttpSession session, Model model, HttpServletRequest request){
+		String returnPage = null;
+		Member m = (Member)session.getAttribute("member");
+		String memberId = m.getMember_id();
+		int page = 1;
+		if(request.getParameter("page") != null){
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		ArrayList<WorkBoard> list = memberService.likeCompList(memberId, page);
+		if(list != null){
+			request.setAttribute("list", list);
+			returnPage = "workboard/likeListBoard";
 		}
 		return returnPage;
 	}

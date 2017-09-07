@@ -2,10 +2,12 @@ package org.kh.dajob.member.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.kh.dajob.member.model.vo.Company;
 import org.kh.dajob.member.model.vo.CompanyType;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
+import org.kh.dajob.workboard.model.vo.WorkBoard;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,6 +50,14 @@ public class MemberDao {
 
 	public ArrayList<CompanyType> selectCompanyList() {
 		return new ArrayList<CompanyType>(sqlSession.selectList("Company.selectComType"));
+	}
+
+	public ArrayList<WorkBoard> likeCompList(String memberId, int page) {
+		int limit = 10;
+		int startPage = (page - 1) * limit + 1;
+		int endPage = page * limit;
+		RowBounds rowBounds = new RowBounds(startPage, endPage);
+		return new ArrayList<WorkBoard>(sqlSession.selectList("WorkBoard.likeCompList", memberId, rowBounds));
 	}
 }
 
