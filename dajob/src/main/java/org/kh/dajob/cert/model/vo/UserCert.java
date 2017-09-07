@@ -21,6 +21,11 @@ public class UserCert implements java.io.Serializable{
 		this.cert_date = cert_date;
 	}
 	
+	@Override
+	public String toString() {
+		return "UserCert [member_id=" + member_id + ", cert_no=" + cert_no + ", cert_date=" + cert_date + "]";
+	}
+
 	public String getMember_id() {
 		return member_id;
 	}

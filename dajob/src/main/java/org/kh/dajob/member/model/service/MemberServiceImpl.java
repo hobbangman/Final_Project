@@ -1,8 +1,11 @@
 package org.kh.dajob.member.model.service;
 
+import java.util.ArrayList;
+
 import org.kh.dajob.member.model.dao.MemberDao;
 import org.kh.dajob.member.model.service.MemberService;
 import org.kh.dajob.member.model.vo.Company;
+import org.kh.dajob.member.model.vo.CompanyType;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member loginMember(Member m){
 		return memberDao.selectMember(m);
+	}
+	
+	@Override
+	public ArrayList<CompanyType> selectCompanyList() {
+		return memberDao.selectCompanyList();
 	}
 	
 	@Override

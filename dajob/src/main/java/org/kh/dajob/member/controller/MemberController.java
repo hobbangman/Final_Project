@@ -3,12 +3,15 @@ package org.kh.dajob.member.controller;
 import java.io.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.kh.dajob.cert.model.service.CertService;
+import org.kh.dajob.cert.model.vo.UserCert;
 import org.kh.dajob.member.model.service.MemberService;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @Controller
 public class MemberController {
@@ -63,6 +69,7 @@ public class MemberController {
 		logger.info("enrollView() call...");
 		
 		model.addAttribute("certList",certService.selectList());
+		model.addAttribute("comTypeList",memberService.selectCompanyList());
 		
 		return "member/enroll";
 	}
@@ -92,23 +99,24 @@ public class MemberController {
 		chk.close();
 	}
 	
-	@RequestMapping("userEnroll.do")
+	@RequestMapping(value = "userEnroll.do", method = RequestMethod.POST)
 	public String userInsert(HttpServletRequest request, Model model) throws UnsupportedEncodingException{
 		logger.info("userInsert() call...");
 		request.setCharacterEncoding("utf-8");
 		String returnPage = null;
-		/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");*/
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String member_id = request.getParameter("member_id");
 		String member_password = request.getParameter("member_password");
-		String member_type_code = "U";
 		String member_name = request.getParameter("member_name");
 		String member_phone = request.getParameter("member_phone");
 		String gender = request.getParameter("gender");
 		Date birthday = Date.valueOf(request.getParameter("birthday"));
+		int certCnt = Integer.parseInt(request.getParameter("certCnt"));
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(request.getParameter("email1") + "@" +request.getParameter("email2"));
+		sb.append(request.getParameter("email1") + "@");
+		sb.append(request.getParameter("email2"));
 		String member_email = sb.toString();
 		
 		sb = new StringBuilder();
@@ -117,12 +125,38 @@ public class MemberController {
 		sb.append(request.getParameter("addr2"));
 		String member_address = sb.toString();
 		
-		int result = memberService.insertMember(new Member(member_id,member_password,member_type_code,
+		// 유저의 자격증 정보 Map으로 취합
+		Map<String, Object> map = null;
+		
+		int result = memberService.insertMember(new Member(member_id,member_password,"U",
 				member_name,member_email,member_phone,member_address,"default.jpg"));
 		if (result > 0) {
-			result = memberService.insertUser(new User(member_id, gender, birthday));
+			result = memberService.insertUser(new User(member_id, gender, birthday, null, null));
+			
 			if(result > 0) {
-				returnPage = "index";
+				
+				if(request.getParameter("certCnt") != null || certCnt > 0) {
+					map = new HashMap<String, Object>();
+					ArrayList<UserCert> list = new ArrayList<UserCert>();
+					int i = 1;
+					while(i < certCnt+1) {
+						String cert_no = request.getParameter("cert"+i);
+						Date cert_date = Date.valueOf(request.getParameter("certDate"+i));
+						UserCert u = new UserCert(member_id, cert_no, cert_date);
+						list.add(u);
+						//map.put("cert_no", u);
+						i++;
+					}
+					map.put("cert_no", list);
+					result = certService.insertUserCert(map);
+				} else {result = 1;}
+				
+				if(result > 0) {
+					returnPage = "index";
+				} else {
+					model.addAttribute("message", "회원 자격증 정보 등록 실패!!");
+					returnPage = "member/memberError";
+				}
 			} else {
 				model.addAttribute("message", "회원 정보 등록 실패!!");
 				returnPage = "member/memberError";
@@ -135,20 +169,21 @@ public class MemberController {
 		return returnPage;
 	}
 	
-	@RequestMapping("compEnroll.do")
+	@RequestMapping(value = "compEnroll.do", method = RequestMethod.POST)
 	public String compInsert(HttpServletRequest request, Model model) throws UnsupportedEncodingException{
 		logger.info("compInsert() call...");
 		request.setCharacterEncoding("utf-8");
 		String returnPage = null;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String member_id = request.getParameter("member_id");
 		String member_password = request.getParameter("member_password");
-		String member_type_code = "C";
 		String member_name = request.getParameter("member_name");
 		String member_phone = request.getParameter("member_phone");
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(request.getParameter("email1") + "@" +request.getParameter("email2"));
+		sb.append(request.getParameter("email1") + "@");
+		sb.append(request.getParameter("email2"));
 		String member_email = sb.toString();
 		
 		sb = new StringBuilder();
@@ -157,7 +192,7 @@ public class MemberController {
 		sb.append(request.getParameter("addr2"));
 		String member_address = sb.toString();
 		
-		int result = memberService.insertMember(new Member(member_id,member_password,member_type_code,
+		int result = memberService.insertMember(new Member(member_id,member_password,"C",
 				member_name,member_email,member_phone,member_address,"default.jpg"));
 		if (result > 0) {
 			returnPage = "index";

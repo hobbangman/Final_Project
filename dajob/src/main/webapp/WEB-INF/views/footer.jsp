@@ -95,14 +95,16 @@
 	</section>
 
     <script type="text/javascript" src="/dajob/resources/js/jquery-1.10.2.min.js"></script>
+    <!-- <script type="text/javascript" src="/dajob/resources/js/jquery-3.2.1.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script> -->
     <script src="/dajob/resources/js/bootstrap.min.js"></script>
     <script src="/dajob/resources/js/jquery.easing.1.3.js"></script>
     <script src="/dajob/resources/js/retina-1.1.0.min.js"></script>
     <script type="text/javascript" src="/dajob/resources/js/jquery.cookie.js"></script> <!-- jQuery cookie -->
     <script type="text/javascript" src="/dajob/resources/js/styleswitch.js"></script> <!-- Style Colors Switcher -->
     <script type="text/javascript" src="/dajob/resources/js/jquery.flexslider-min.js"></script>
-    <script type="text/javascript" src="/dajob/resources/js/jquery.smartmenus.min.js"></script>
-    <script type="text/javascript" src="/dajob/resources/js/jquery.smartmenus.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/dajob/resources/js/jquery.smartmenus.min.js?ver=1"></script>
+    <script type="text/javascript" src="/dajob/resources/js/jquery.smartmenus.bootstrap.min.js?ver=1"></script>
     <script type="text/javascript" src="/dajob/resources/js/jquery.jcarousel.js"></script>
     <script type="text/javascript" src="/dajob/resources/js/jflickrfeed.js"></script>
     <script type="text/javascript" src="/dajob/resources/js/jquery.magnific-popup.min.js"></script>

@@ -17,6 +17,11 @@ public class Cert implements java.io.Serializable {
 		this.cert_type = cert_type;
 	}
 
+	@Override
+	public String toString() {
+		return "Cert [cert_no=" + cert_no + ", cert_name=" + cert_name + ", cert_type=" + cert_type + "]";
+	}
+
 	public String getCert_no() {
 		return cert_no;
 	}

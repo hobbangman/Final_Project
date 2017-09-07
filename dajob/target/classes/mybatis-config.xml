@@ -11,7 +11,9 @@
 		<typeAlias type="org.kh.dajob.member.model.vo.Member" alias="Member" />
 		<typeAlias type="org.kh.dajob.member.model.vo.User" alias="User" />
 		<typeAlias type="org.kh.dajob.member.model.vo.Company" alias="Company" />
-		<typeAlias type="org.kh.dajob.cert.model.vo.Cert" alias="Cert" />		
+		<typeAlias type="org.kh.dajob.member.model.vo.CompanyType" alias="CompanyType" />
+		<typeAlias type="org.kh.dajob.cert.model.vo.Cert" alias="Cert" />
+		<typeAlias type="org.kh.dajob.cert.model.vo.UserCert" alias="UserCert" />		
 	</typeAliases>
 	
 	<!-- <environments default="development">

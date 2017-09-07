@@ -26,24 +26,29 @@
 -------------------------------------->
 
         <div class="navbar navbar-default navbar-static-top" role="navigation">
-
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle main" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
             </div>
+            
             <div class="navbar-collapse collapse">
                 <div class="navbar-header visible-xs">
-                    <div class="navbar-brand">DA JOB Menu</div>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    <div class="navbar-brand" style="height:75px;">DA JOB Menu<br>
+                    <c:if test="${empty member}">
+	        		<div id="top-info" class="visible-xs clearfix">
+	            		<span><a href="enrollView.do"><i class="fa fa-edit"></i>Sign up</a></span>
+	            		<span><a href='#login-modal' data-toggle='modal' data-target='#login-modal'><i class="fa fa-sign-in"></i>Login</a></span>
+	        		</div>
+					</c:if><c:if test="${!empty member}">
+					<div id="top-info" class="visible-xs clearfix">
+	        		    <span>${member.member_name}님 환영합니다! &nbsp;&nbsp; <a href="logout.do"><i class="fa fa-sign-out"></i>Logout</a></span>
+	        		</div>
+					</c:if>
+                    </div>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.do">Home</a></li>
@@ -261,6 +266,17 @@ function login(){
 
 <!-- 로그인 여부를 확인하고 로그인 모달 창 호출 -->
 <script type="text/javascript">
+$(document).on('click',function(){
+	if($('.collapse').hasClass('in')){
+		$('.collapse').removeClass('in');
+    	$('.collapse').toggle('slow');
+	}
+})
+$('.main').on('click',function(){
+	$('.main').hide();
+    $('.collapse').toggle('slow');
+    $('.main').show('slow');
+})
 	$(function(){
 		$('#mypage ul li a').on("click", function(){
 			if($('a').first().text().trim() == "Login"){
@@ -268,5 +284,6 @@ function login(){
 				return false;
 			}
 		});
+		$(".main").css('z-index','10000');
 	});
 </script>

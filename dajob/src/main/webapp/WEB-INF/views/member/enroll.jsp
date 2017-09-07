@@ -39,6 +39,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 <style>
+header{
+	background: url("/dajob/resources/images/page-header2.jpg") no-repeat;
+}
+
 font {
 	font-size: 14pt;
 }
@@ -61,7 +65,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 </head>
 <body>
 	<!--Start Header-->
-	<header>
+	<header>	
 		<c:import url="../header.jsp" />
 		<div class="container page_head">
 			<div class="row">
@@ -83,6 +87,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 		<!--./Container-->
 	</header>
 <c:set var="certList" value="${requestScope.certList}"/>
+<c:set var="comTypeList" value="${requestScope.comTypeList}"/>
 	<!--start wrapper-->
 	<section class="wrapper">
 		<section class="content contact">
@@ -115,7 +120,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<span>일반 회원 가입</span>
 							</h4>
 						</div>
-						<form action="userEnroll.do" method="post" id="userInsert">
+						<form action="userEnroll.do" method="post" id="userInsert" enctype="multipart/form-data">
 						<input type="number" name="certCnt" id="certCnt" style="display: none;">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
@@ -150,17 +155,16 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<tr><td>E-Mail : </td>
 									<td><input type="text" name="email1" placeholder="가입자 이메일" size="15">&nbsp;
 										@&nbsp; <input type="text" name="email2" value=""
-										style="width: 120px" disabled>&nbsp; 
+										style="width: 120px" readOnly>&nbsp; 
 										<select	name="email" onchange="email_change(this)">
 											<option value="0">선택하세요</option>
 											<option value="9">직접입력</option>
 											<option value="naver.com">naver.com</option>
 											<option value="nate.com">nate.com</option>
 											<option value="hanmail.net">hanmail.net</option>
-											<option value="hotmail.com">hotmail.com</option>
-											<option value="nate.com">nate.com</option>
-											<option value="yahoo.co.kr">yahoo.co.kr</option>
 											<option value="gmail.com">gmail.com</option>
+											<option value="hotmail.com">hotmail.com</option>
+											<option value="yahoo.co.kr">yahoo.co.kr</option>
 									</select></td>
 								</tr>
 								<tr><td>연락처 : </td>
@@ -171,15 +175,15 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 									<td><input type="text" name="post_code"
 										placeholder="우편번호">&nbsp;&nbsp;<button type="button" class="btn btn-default btn-xs" onclick="execDaumPostcode();">찾기</button></td>
 								</tr>
-								<tr><td>상세주소 : </td>
+								<tr><td>주소 : </td>
 									<td><input type="text" name="addr1"
 										placeholder="주소" size="22%" >&nbsp;<input type="text" name="addr2"
 										placeholder="상세주소" size="22%" ></td>
 								</tr>
 								<tr><td>성별 : </td>
-									<td><input class="inputBtn" type="radio" name="gender" value="M" checked>
+									<td><input type="radio" class="inputBtn gender" name="gender" value="M" checked>
 										<label for="gender" class="inputBtn" style="display:inline;">&nbsp;남성</label>
-  										&nbsp;&nbsp; &nbsp;&nbsp;<input class="inputBtn" type="radio" name="gender" value="F">
+  										&nbsp;&nbsp; &nbsp;&nbsp;<input class="inputBtn gender" type="radio" name="gender" value="F">
   										<label for="gender" class="inputBtn" style="display:inline;">&nbsp;여성</label></td>
 								</tr>
 								<tr><td>생년월일 : </td>
@@ -210,7 +214,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<span>기업 회원 가입</span>
 							</h4>
 						</div>
-						<form action="compEnroll.do" method="post" id="compInsert">
+						<form action="compEnroll.do" method="post" id="compInsert" enctype="multipart/form-data">
 							<table style="align-content: center; padding: 8px;">
 								<tr><td>아이디 : </td>
 									<td><input type="text" class="id" name="member_id"
@@ -234,17 +238,37 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 								<tr>
 									<td colspan="2"><span class="passcheckLayer2"></span></td>
 								</tr>
-								<tr><td>프로필<br>이미지 : </td>
+								<tr><td>기업<br>이미지 : </td>
 									<td><p align="center"><input type="file" name="member_profile_img"></p></td>
 								</tr>
-								<tr><td>회원이름 : </td>
+								<tr><td>기업 명 : </td>
+									<td><input type="text" name="company_name"
+										placeholder="기업 명" size="52%"></td>
+								</tr>
+								<tr><td>사업자 등록 번호 : </td>
+									<td><input type="text" name="company_code"
+										placeholder="사업자 등록 번호" size="52%" pattern="[0-9]{3}-[0-9]{2}-[0-9]{5}"></td>
+								</tr>
+								<tr><td>회사 연락처 : </td>
+									<td><input type="tel" name="company_tel"
+										placeholder="Tel number" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
+								</tr>
+								<tr><td>FAX 번호 : </td>
+									<td><input type="tel" name="company_fax"
+										placeholder="Fax Address" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
+								</tr>
+								<tr><td>담당자이름 : </td>
 									<td><input type="text" name="member_name"
-										placeholder="가입자 이름" size="52%"></td>
+										placeholder="담당자 이름" size="52%"></td>
+								</tr>
+								<tr><td>연락처 : </td>
+									<td><input type="tel" name="member_phone"
+										placeholder="연락처" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
 								</tr>
 								<tr><td>E-Mail : </td>
-									<td><input type="text" name="email1" placeholder="가입자 이메일" size="15">&nbsp;
+									<td><input type="text" name="email1" placeholder="담당자 이메일" size="15">&nbsp;
 										@&nbsp; <input type="text" name="email2" value=""
-										style="width: 120px" disabled>&nbsp; 
+										style="width: 120px" readOnly>&nbsp; 
 										<select	name="email" onchange="email_change(this)">
 											<option value="0">선택하세요</option>
 											<option value="9">직접입력</option>
@@ -257,18 +281,58 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 											<option value="gmail.com">gmail.com</option>
 									</select></td>
 								</tr>
-								<tr><td>연락처 : </td>
-									<td><input type="tel" name="member_phone"
-										placeholder="연락처" size="52%" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"></td>
-								</tr>
 								<tr><td>우편번호 : </td>
 									<td><input type="text" name="post_code"
 										placeholder="우편번호">&nbsp;&nbsp;<button type="button" class="btn btn-default btn-xs" onclick="execDaumPostcode();">찾기</button></td>
 								</tr>
-								<tr><td>상세주소 : </td>
+								<tr><td>회사주소 : </td>
 									<td><input type="text" name="addr1"
 										placeholder="주소" size="22%" >&nbsp;<input type="text" name="addr2"
 										placeholder="상세주소" size="22%" ></td>
+								</tr>
+								<tr><td>기업 규모 : </td>
+									<td><select	name="company_type" style="height:35px; width:145px;">
+											<option value="0">선택하세요</option>
+											<c:forEach var="comType" items="${comTypeList}">
+												<option value="${comType.company_type}">${comType.company_tname}</option>
+											</c:forEach>
+									</select></td>
+								</tr>
+								<tr><td>사원수 : </td>
+									<td><input type="number" name="company_staff" placeholder="최소 값은 1입니다" min="1" style="width:200px;"></td>
+								</tr>
+								<tr><td>기업자본 : </td>
+									<td><input type="number" name="company_capital" placeholder="기본 단위는 백만원입니다." min="1" style="width:200px;"></td>
+								</tr>
+								<tr><td>창립연도 : </td>
+									<td><input type="date" name="company_date"></td>
+								</tr>
+								<tr><td>복지 정보 : </td>
+									<td><input type="checkbox" name="company_welfare" class="inputBtn" value="4대보험">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">4대보험</label>
+									&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="석식 제공">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">석식 제공</label>
+									&nbsp;&nbsp;&nbsp;<br>
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="유류비 지원">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">유류비 지원</label>
+									&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="숙식 제공">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">숙식 제공</label>
+									&nbsp;&nbsp;&nbsp;<br>
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="상여금 지급">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">상여금 지급</label>
+									&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="야근 수당">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">야근 수당</label>
+									&nbsp;&nbsp;&nbsp;<br>
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="자기개발비 지원">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">자기개발비 지원</label>
+									&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" name="company_welfare" class="inputBtn" value="야근 수당">
+									<label for="company_welfare" class="inputBtn" style="display:inline;">자녀 학자금</label>
+									&nbsp;&nbsp;&nbsp;<br>
+									</td>
 								</tr>
 								<tr style="height: 100px;">
 									<td colspan="2" style="text-align: center;"><button class="btn btn-success" type="submit">가입하기</button>&nbsp;&nbsp;
@@ -298,6 +362,7 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 <script type="text/javascript"
 	src="<c:url value='/resources/js/jquery-3.2.1.min.js'/>"></script>
 <script type="text/javascript">
+	var cnt = 0;
 	var s_default = {
 		"border" : "1px solid #ccc",
 		"background-color" : "#fff"
@@ -428,29 +493,31 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 	};
 
 	function email_change(e) {
-		//console.log($(e).val());
 		var email2 = $(e).parent().find('input[name=email2]');
 		if ($(e).val() == '0') {
-			email2.attr('disabled', 'true');
+			email2.attr('readOnly', 'true');
 			email2.val('');
 		}
 		else if ($(e).val() == '9') {
-			email2.removeAttr('disabled');
+			email2.removeAttr('readOnly');
 			email2.val('');
 			email2.focus();
 		} else {
-			email2.attr('disabled', 'true');
+			email2.attr('readOnly', 'true');
 			email2.val($(e).val());
 		}
 	};
 	
 	function reset() {
-		$(".enrollUser input").each(function() {
+		$(".enrollUser input").not(".gender, .certChk").each(function() {
 			$(this).val('');
 		});
-		$(".enrollCompany input").each(function() {
+		$(".enrollCompany input").not(".gender, .certChk").each(function() {
 			$(this).val('');
 		});
+		if($("#certChk").is(":checked")){
+			$("#certChk").removeAttr('checked');
+		}
 		$('.passcheckLayer').text('');
 		$('.passcheckLayer2').text('');
 		$('.idchk').html('');
@@ -492,7 +559,6 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 	});
 	
 	$(function() {
-		
 	      $("#certChk").change(function(){
 	        if($("#certChk").is(":checked")){
 	            cnt = 1;
@@ -541,7 +607,9 @@ label{vertical-align:-1px}.inputBtn{width:13px;height:13px;vertical-align:text-t
 	        } 
 
 	    today = yyyy+'-'+mm+'-'+dd;
+	    past = (yyyy-51)+'-'+mm+'-'+dd;
 	    $("input[type=date]").attr('max', today);
+	    $("input[type=date]").attr('min', past);
 	});
 </script>
 </html>

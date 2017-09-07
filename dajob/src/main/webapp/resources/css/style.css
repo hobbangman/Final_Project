@@ -145,6 +145,7 @@ a:focus{
 header{
     background: url("../images/page-header.jpg") no-repeat;
 }
+
 .home header{
     background: none;
     height: 500px;

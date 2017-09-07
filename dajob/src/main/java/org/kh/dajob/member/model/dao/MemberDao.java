@@ -1,6 +1,9 @@
 package org.kh.dajob.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.kh.dajob.member.model.vo.Company;
+import org.kh.dajob.member.model.vo.CompanyType;
 import org.kh.dajob.member.model.vo.Member;
 import org.kh.dajob.member.model.vo.User;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,6 +44,10 @@ public class MemberDao {
 	
 	public int deleteMember(String userid) {
 		return sqlSession.delete("Member.deleteMember", userid);
+	}
+
+	public ArrayList<CompanyType> selectCompanyList() {
+		return new ArrayList<CompanyType>(sqlSession.selectList("Company.selectComType"));
 	}
 }
 

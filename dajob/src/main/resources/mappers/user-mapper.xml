@@ -28,7 +28,7 @@
 	<insert id="insertUser" parameterType="User" flushCache="true"
 		statementType="PREPARED" keyProperty="" keyColumn="" useGeneratedKeys="true"
 		timeout="20">
-		INSERT INTO MEMBER VALUES(#{member_id}, #{gender}, #{birthday}, NULL, #{resumefile})
+		INSERT INTO MEMBER_USER VALUES(#{member_id}, #{gender}, #{birthday}, #{resume_data}, #{resumefile})
 	</insert>
 
 	<update id="updateMember" parameterType="User" flushCache="true"
